@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: mahavir
+          POSTGRES_PASSWORD: mahavir
+          POSTGRES_DB: mahavir
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U mahavir -d mahavir"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -r requirements-dev.txt
+      - name: Migrate
+        env:
+          DATABASE_URL: postgresql+psycopg://mahavir:mahavir@localhost:5432/mahavir
+        run: alembic upgrade head
+      - name: Test
+        env:
+          DATABASE_URL: postgresql+psycopg://mahavir:mahavir@localhost:5432/mahavir
+          APP_ENV: test
+        run: pytest
