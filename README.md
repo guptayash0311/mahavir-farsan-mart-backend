@@ -24,6 +24,8 @@ uvicorn app.main:app --reload
 
 Health check: http://localhost:8000/api/v1/health
 
+Set `JWT_SECRET` before production. `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` create the first Super Admin when the user table is empty. Reminder jobs run with `python -m app.worker`. File uploads use the local `STORAGE_LOCAL_PATH` directory unless `STORAGE_BACKEND=s3`.
+
 ## Tests
 
 ```powershell

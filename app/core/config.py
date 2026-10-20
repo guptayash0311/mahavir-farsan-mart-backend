@@ -19,6 +19,21 @@ class Settings(BaseSettings):
     database_url: str = ""
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     shop_timezone: str = "Asia/Kolkata"
+    jwt_secret: str = "dev-only-change-me-to-a-long-secret"
+    jwt_access_minutes: int = 15
+    jwt_refresh_days: int = 14
+    bootstrap_admin_email: str = ""
+    bootstrap_admin_password: str = ""
+    storage_backend: str = "local"
+    storage_local_path: str = "./data/storage"
+    s3_endpoint: str = ""
+    s3_bucket: str = "mahavir"
+    s3_access_key: str = ""
+    s3_secret_key: str = ""
+    s3_region: str = "us-east-1"
+    redis_url: str = ""
+    sentry_dsn: str = ""
+    rate_limit_per_minute: int = 60
 
     @model_validator(mode="after")
     def assemble_database_url(self) -> "Settings":
